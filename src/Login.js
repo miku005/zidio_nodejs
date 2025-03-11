@@ -1,12 +1,27 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ toggleForm }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const Login = () => {
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Logging in with\nEmail: ${email}\nPassword: ${password}`);
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const user = users.find(
+      (user) => user.email === formData.email && user.password === formData.password
+    );
+
+    if (user) {
+      alert("Login successful!");
+      navigate("/dashboard"); // Redirect to the dashboard/expense management page
+    } else {
+      alert("Invalid email or password. Please try again.");
+    }
   };
 
   return (
@@ -15,24 +30,28 @@ const Login = ({ toggleForm }) => {
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
           type="email"
+          name="email"
           placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          value={formData.email}
+          onChange={handleChange}
           style={styles.input}
+          required
         />
         <input
           type="password"
+          name="password"
           placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          value={formData.password}
+          onChange={handleChange}
           style={styles.input}
+          required
         />
-        <button type="submit" style={styles.button}>Login</button>
+        <button type="submit" style={styles.button}>
+          Login
+        </button>
       </form>
-      <p onClick={toggleForm} style={styles.toggleText}>
-        Don't have an account? Sign Up
+      <p>
+        Don't have an account? <a href="/signup" style={styles.link}>Sign Up</a>
       </p>
     </div>
   );
@@ -43,7 +62,7 @@ const styles = {
   form: { display: "flex", flexDirection: "column", gap: "10px", maxWidth: "300px", margin: "auto" },
   input: { padding: "10px", fontSize: "16px" },
   button: { padding: "10px", fontSize: "16px", background: "blue", color: "white", border: "none", cursor: "pointer" },
-  toggleText: { color: "blue", cursor: "pointer", marginTop: "10px" }
+  link: { color: "blue", textDecoration: "none" },
 };
 
 export default Login;

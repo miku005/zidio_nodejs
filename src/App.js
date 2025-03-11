@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import Login from "./Login";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignUp from "./SignUp";
+import Login from "./Login";
+import Dashboard from "./Dashboard";
 
-function App() {
-  const [isLogin, setIsLogin] = useState(true);
-
+const App = () => {
   return (
-    <div>
-      {isLogin ? <Login toggleForm={() => setIsLogin(false)} /> : <SignUp toggleForm={() => setIsLogin(true)} />}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
