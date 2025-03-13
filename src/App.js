@@ -1,20 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import SignUp from "./SignUp";
-import Login from "./Login";
-import Dashboard from "./Dashboard";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import SignUp from "./components/SignUp";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import "./App.css";
 
-const App = () => {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </Router>
   );
-};
+}
 
 export default App;
